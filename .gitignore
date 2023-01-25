@@ -1,3 +1,5 @@
 node_modules
 .env
 .vercel
+tailwind.config.js
+postcss.config.js
