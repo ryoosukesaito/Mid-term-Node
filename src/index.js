@@ -1,29 +1,32 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const ejs = require('ejs');
-const bodyParser = require('body-parser');
+const express = require("express");
+const ejs = require("ejs");
+const bodyParser = require("body-parser");
 const app = express();
-const path = require('path');
+const path = require("path");
 
+const dbPool = require("./utils/mysql2");
+
+app.use("/js", express.static(path.join(__dirname, "/public/js")));
+app.set("view engine", "ejs");
+app.set("views", "src/views");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+dbPool.connect((err) => {
+  if (err) throw err;
+  console.log("database connected"); //
+})
 
-app.set('view engine','ejs');
-app.set('views','src/views');
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/", require("./routes/pages"));
+app.use("/api", require("./routes/Users"));
+// app.use("/register", require("./routes/pages"));
 
-app.get('/', (req, res, next) => {
-  // const userName = process.env.USER_NAME || 'World';
-  // res.send(`<h1>Hello ${userName}!</h1>`)
-  res.render('login');
-});
-
-app.get('/signup', (req, res) => {
-  res.render('sign-up');
-});
-
-
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
+//connect to port and database
+const PORT = process.env.PORT || 6000;
+app.listen(PORT, async () => {
   console.log(`Server listening on port ${PORT}`);
+
+  // const [data] = await dbPool.query("SELECT 5");
+  // console.log("database is connected");
 });

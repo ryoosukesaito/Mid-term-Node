@@ -1,14 +1,14 @@
-const router = require("express").Router();
-const uuid = require("uuid");
-
-const userAdmin = [
-  { _id: uuid.v4(), name: "admin", email: "admin@example.com" },
-];
+const express = require('express');
+const router = express.Router();
+const register = require('../controllers/registerFunc')
+// const login = require('../controllers/loginFunc');
 
 
 //user registration 
-router.get("/register", (req, res, next) => {
-  
-})
+router.post("/register", register);
+// router.post("/login", login);
 
-router.get('')
+
+// router.get('')
+
+module.exports = router;
