@@ -1,8 +1,9 @@
 const pool = require("../utils/mysql2");
 
 
-const register = async (req, res) => {
+const registerController = async (req, res) => {
   const { username, email, password } = req.body;
+  console.log(req.body);
   if (!email || !password)
     return res.json({ status: "error", error: "Plz enter email and password" });
   else {
@@ -12,7 +13,7 @@ const register = async (req, res) => {
       [username],
       async (err, results) => {
         if (err) throw err;
-        if (results.length)
+        if (results.length>0)
           return res.json({
             status: "error",
             error: "This username already exists",
@@ -38,4 +39,4 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = register;
+// module.exports = registerController;

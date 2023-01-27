@@ -9,9 +9,6 @@ const pool = mysql.createConnection({
   port: process.env.MYSQL_PORT,
 });
 
-// const userAdmin = [
-//   { id: uuid.v4(), username: "admin", email: "admin@example.com" },
-// ];
 
 const sql = `SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA= 'railway' AND TABLE_NAME='Users'`;
 
