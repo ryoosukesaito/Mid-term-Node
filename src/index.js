@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const dbPool = require("./utils/mysql2");
 
+
+
 app.use("/js", express.static(path.join(__dirname, "/public/js")));
 app.set("view engine", "ejs");
 app.set("views", "src/views");
