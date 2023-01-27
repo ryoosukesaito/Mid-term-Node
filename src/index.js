@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const dbPool = require("./utils/mysql2");
 
-
+const cookieParser = require('cookie-parser');
 
 app.use("/js", express.static(path.join(__dirname, "/public/js")));
 app.set("view engine", "ejs");
@@ -21,12 +21,12 @@ dbPool.connect((err) => {
   }
 });
 
-const jsonParser = bodyParser.urlencoded({ extended: false });
-
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use("/", require("./routes/pages"));
-app.use("/api", jsonParser, require("./routes/auth"));
+app.use("/api", require("./routes/auth"));
 
 //connect to port and database
 const PORT = process.env.PORT || 6000;

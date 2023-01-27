@@ -1,6 +1,7 @@
 require("dotenv").config();
 const pool = require("../utils/mysql2");
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 exports.register = (req, res) => {
   console.log(req.body);
@@ -76,6 +77,7 @@ exports.register = (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  //authenticate username and password
   try {
     const { username, password } = req.body;
     // console.log("here is username"+username);
@@ -84,7 +86,7 @@ exports.login = async (req, res) => {
       "SELECT * FROM Users WHERE username=?",
       [username],
       async (error, result) => {
-        console.log("here is username check" + JSON.stringify(result));
+        // console.log("here is username check" + JSON.stringify(result));
         if (result.length <= 0) {
           return res.status(402).render("login", {
             Title: "Login Page",
@@ -92,9 +94,7 @@ exports.login = async (req, res) => {
             msg: "Username or Password does not match",
           });
         } else {
-          console.log(
-            "here is username check:  " + JSON.stringify(result[0].password)
-          );
+          // console.log("here is username check:  " + JSON.stringify(result[0].password));
           if (password !== result[0].password) {
             return res.status(402).render("login", {
               Title: "Login Page",
@@ -107,19 +107,59 @@ exports.login = async (req, res) => {
               expiresIn: process.env.JWT_EXPIRES_IN,
             });
             console.log("The token is " + token);
-            // return res.send("Good");
+            const cookieOptions = {
+              expires: new Date(
+                Date.now() +
+                  process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+              ),
+              httpOnly: true,
+            };
+            res.cookie("hoge", token, cookieOptions);
+            res.status(200).redirect("/home");
           }
-
-          //render to home page later
-          // return res.status(200).render("login", {
-          //   Title: "Login Page",//rewrite page name to wanna render later
-          //   status: "success",
-          //   msg: `Hello ${username}`
-          // })
         }
       }
     );
   } catch (err) {
     console.log(err);
   }
+};
+
+exports.loggedIn = async (req, res, next) => {
+  // req.name = "Checking login";
+  // console.log(req.cookies);
+  if (req.cookies.hoge) {
+    try {
+      const decode = await promisify(jwt.verify)(
+        req.cookies.hoge,
+        process.env.JWT_SECRET
+      );
+      // console.log(decode);
+      pool.query(
+        "SELECT * FROM Users WHERE UserID = ?",
+        [decode.UserID],
+        (err, results) => {
+          // console.log(results);
+          if(!results){
+            return next();
+          }
+          req.user = results[0];
+          return next();
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      return next();
+    }
+  } else {
+    next();
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  res.cookie("hoge","logout", {
+    expires: new Date(Date.now() + 2 *1000),
+    httpOnly: true,
+  });
+  res.redirect("/"); 
 };

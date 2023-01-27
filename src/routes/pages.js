@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
+const registerController = require("../controllers/registerController");
+
+router.get(["/","/login"], (req, res) => {
   res.render("login", {
     Title: "Login Page",
     status: "",
@@ -16,6 +18,19 @@ router.get("/register", (req, res) => {
   });
 });
 
-// router.get("/", (req, res) => {});
+router.get("/home", registerController.loggedIn, (req, res) => {
+  // console.log("Checking name on router: " + req.name);
+  if (req.user) {
+    console.log(req.user)
+    res.render("home",{
+      Title: "Home Page",
+      username: req.user.username
+    })
+  } else {
+    res.redirect('/login')
+    
+  }
+
+});
 
 module.exports = router;
