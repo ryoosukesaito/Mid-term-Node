@@ -1,9 +1,50 @@
 <%- include('partials/header.ejs')%>
-<%- include('partials/navbar.ejs')%>
+  <%- include('partials/navbar.ejs')%>
 
-<main>
-<h1>Hello <%- username%></h1>
+    <!-- login alert -->
+    <div id="log-alert" style="float: right; display: block;">
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative w-80" role="alert">
+        <strong class="font-bold"><%- msg%>!</strong>
+        </br>
+        <span class="block sm:inline">Hello <%- username%></span>
+        <span id="close" class="absolute flex items-center top-0 bottom-0 right-0 pr-2 py-3">
+          <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20">
+            <title>Close</title>
+            <path
+              d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <script>
+      const alert = document.getElementById('log-alert');
+      const close = document.getElementById('close');
+      close.addEventListener('click', function () {
+        alert.style.display = 'none';
+      })
+      setTimeout(function () {
+        alert.style.display = 'none';
+      }, 5000)
 
-</main>
+    </script>
 
-<%- include('partials/footer.ejs')%>
+    <header class="bg-white shadow">
+      <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+      </div>
+
+    </header>
+
+    <main>
+      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <!-- Replace with your content -->
+        <div class="px-4 py-6 sm:px-0">
+          <div class="h-96 rounded-lg border-4 border-dashed border-gray-200"></div>
+
+        </div>
+        <!-- /End replace -->
+      </div>
+    </main>
+
+    <%- include('partials/footer.ejs')%>
