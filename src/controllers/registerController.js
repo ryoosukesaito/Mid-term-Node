@@ -2,8 +2,6 @@ require("dotenv").config();
 const pool = require("../utils/mysql2");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
-const { query } = require("../utils/mysql2");
-const { accessSync } = require("fs");
 
 exports.register = (req, res) => {
   console.log(req.body);
