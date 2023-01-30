@@ -1,0 +1,32 @@
+<div class="bg-white px-4 py-5 grid grid-cols-5 gap-4 px-3">
+  <%if(!tasks){%>
+    <div></div>
+    <div></div>
+    <dd class="text-sm font-medium text-gray-500 pt-2 flex justify-center items-center relative">Get All Data</dd>
+    <div></div>
+    <div></div>
+    <%}else{%>
+      <%tasks.forEach((task) => {%>
+        <dd class="text-sm font-medium text-gray-600 pt-2">
+          <%=task.title%>
+        </dd>
+        <dd class="text-sm font-medium text-gray-600 pt-2">
+          <%=task.detail%>
+        </dd>
+        <dd class="text-sm font-medium text-gray-600 pt-2"><%=task.username%></dd>
+        <dd class="text-sm font-medium text-gray-600 pt-2"><%=task.date%></dd>
+        <dd class="text-sm font-medium text-gray-600">
+          <div class="inline-block flex justify-center">
+            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+              Edit
+            </button>
+            <!-- /tasks/delete/task.TaskID?_method=DELETE -->
+            <form action="" method="">
+              <input type="submit" value="Delete"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+            </form>
+          </div>
+        </dd>
+        <%})%>
+          <%}%>
+</div>

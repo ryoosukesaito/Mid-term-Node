@@ -171,7 +171,7 @@ exports.logout = async (req, res, next) => {
 };
 
 exports.settings = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const { username, email, password, address, about } = req.body;
     if (req.cookies.hoge) {
@@ -199,3 +199,5 @@ exports.deleteProfile =  (req, res, next) => {
   res.redirect("/")
   // res.send("<h1> delete User successfully </h1>");
 };
+
+

@@ -1,0 +1,37 @@
+<%- include('partials/header.ejs')%>
+  <%- include('partials/navbar.ejs')%>
+
+  <header class="bg-white shadow">
+    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Tasks</h1>
+    </div>
+  </header>
+
+<div class="flex justify-between items-center">
+  <div></div>
+  <%if(!tasks){%>
+  <a href="/tasks/all"
+    class="m-3 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Get Tasks</a>
+  <%}%>
+  <a href="/create"
+    class="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Create</a>
+</div>
+<div class="border border-gray-200 mx-4">
+  <dl>
+
+    <div class="border-b border-gray-400 bg-gray-50 px-4 py-5 grid grid-cols-5 gap-4 px-6">
+      <dt class="text-sm font-medium text-gray-900">Title</dt>
+      <dt class="text-sm font-medium text-gray-900">Detail</dt>
+      <dt class="text-sm font-medium text-gray-900">User</dt>
+      <dt class="text-sm font-medium text-gray-900">Date</dt>
+      <dt class="text-sm font-medium text-gray-900"></dt>
+
+    </div>
+
+    <!-- Task contents -->
+    <%-include("_task")-%>
+
+  </dl>
+</div>
+
+<%- include('partials/footer.ejs')%>

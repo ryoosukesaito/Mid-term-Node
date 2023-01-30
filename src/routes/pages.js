@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const pool = require('../utils/mysql2');
 const registerController = require("../controllers/registerController");
 
 router.get(["/", "/login"], (req, res) => {
@@ -59,6 +59,44 @@ router.get("/settings",registerController.loggedIn, (req, res) => {
   }
 });
 
+router.get("/tasks", registerController.loggedIn, (req,res) => {
+  if (req.user) {
+    const name1 = req.user.username.slice(0, 1);
+    res.render("tasks", { user: req.user, Title: "Tasks Page",name1: name1,
+  tasks: undefined })
+  } else {
+    res.redirect("/login");
+  }
+})
 
+router.get("/tasks/all", registerController.loggedIn, (req, res) => {
+  const name1 = req.user.username.slice(0, 1);
+
+  pool.query("SELECT * FROM Tasks ORDER BY TaskID DESC", (err, rows) => {
+    if (!err && rows.length > 0) {
+      console.log(rows);
+      return res.render("tasks", {
+        user: req.user,
+        Title: "Tasks Page",
+        tasks: rows,
+        name1: name1,
+      });
+    } else {
+      return console.log(err);
+    }
+  });
+});
+
+
+router.get("/create", registerController.loggedIn, (req, res) => {
+  const name1 = req.user.username.slice(0, 1);
+  res.render("create", {
+    user: req.user,
+    Title: "Tasks Page",
+    tasks: {},
+    name1: name1,
+  });
+
+});
 
 module.exports = router;

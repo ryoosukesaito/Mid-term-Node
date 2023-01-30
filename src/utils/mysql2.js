@@ -62,4 +62,54 @@ const createDB = () => {
   );
 };
 
+
+const sql2 = `SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA= 'railway' AND TABLE_NAME='Tasks'`;
+
+pool.query(sql2, (error, data2) => {
+  if (error) {
+    return console.error(error.message);
+  }
+
+  if (data2.length === 0) {
+    console.log("Table Tasks not found");
+    createTasksDB();
+  } else {
+    console.log("Table Tasks exists");
+  }
+});
+
+const createTasksDB = () => {
+  pool.query('DROP TABLE IF EXISTS Tasks')
+
+  pool.query(
+    `CREATE TABLE Tasks (
+      TaskID INT NOT NULL AUTO_INCREMENT,
+      title VARCHAR(255) NOT NULL,
+      detail TEXT,
+      username VARCHAR(255) NOT NULL,
+      date TEXT,
+      PRIMARY KEY (TaskID)
+    )`,
+    (err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log("Successfully created Tasks table");
+    }
+  );
+  
+  pool.query(
+    `
+    INSERT INTO Tasks (title, detail, username, date) VALUES
+    ('Create', 'Create Your Task', 'User', now());
+  `,
+    (err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log("Successfully created New Task in table");
+    }
+  );
+}
+
 module.exports = pool;

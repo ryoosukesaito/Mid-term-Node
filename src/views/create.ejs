@@ -1,0 +1,40 @@
+<%- include('partials/header.ejs')%>
+  <%- include('partials/navbar.ejs')%>
+
+    <div class=" md:col-span-2 mt-10">
+
+      <form action="/tasks/create" method="POST">
+        
+        <div class="overflow-hidden shadow sm:rounded-md ">
+          <div class="bg-white px-4 py-5 sm:p-6">
+            <div class="grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-3">
+                <label for="first-name" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" name="title" autocomplete="off" id="title"
+                  class="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+              </div>
+
+              <div class="col-span-6 sm:col-span-4">
+                <label for="email-address" class="block text-sm font-medium text-gray-700">Detail</label>
+                <input type="text" name="detail" id="detail" autocomplete="off"
+                  class="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+              </div>
+
+              <div class="col-span-6 sm:col-span-4">
+                <label for="email-address" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" name="username" id="password" autocomplete="off"
+                  class="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              </div>
+
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+            <button type="submit"
+              class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <%- include('partials/footer.ejs')%>
