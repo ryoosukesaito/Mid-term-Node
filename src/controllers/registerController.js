@@ -2,6 +2,8 @@ require("dotenv").config();
 const pool = require("../utils/mysql2");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const { query } = require("../utils/mysql2");
+const { accessSync } = require("fs");
 
 exports.register = (req, res) => {
   console.log(req.body);
@@ -116,6 +118,7 @@ exports.login = async (req, res) => {
               expires: new Date(
                 Date.now() +
                   process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                //day * hour * min * 1sec
               ),
               httpOnly: true,
             };
@@ -139,7 +142,7 @@ exports.loggedIn = async (req, res, next) => {
         req.cookies.hoge,
         process.env.JWT_SECRET
       );
-      console.log(decode);
+      // console.log(decode);
       pool.query(
         "SELECT * FROM Users WHERE UserID = ?",
         [decode.UserID],
@@ -169,12 +172,24 @@ exports.logout = async (req, res, next) => {
   res.redirect("/");
 };
 
-exports.settings = (req, res, next) => {
+exports.settings = async (req, res, next) => {
   console.log(req.body);
-  const { username, email, password, address, about } = req.body;
+  try {
+    const { username, email, password, address, about } = req.body;
+    if (req.cookies.hoge) {
+    const jwtCookies = await promisify(jwt.verify)(
+      req.cookies.hoge,
+      process.env.JWT_SECRET
+    );
+    const id = jwtCookies.UserID;
 
-  const upDateQuery = "UPDATE User SET username = ?, email = ?, password =?, address = ?, about = ? WHERE UserID =?";
-
-
-  res.redirect("/settings");
+    pool.query(
+      "UPDATE Users SET username = ?, email = ?,password= ?, address=?,about=? WHERE UserID =?",
+      [username,email, password, address, about, id]
+      )
+      res.redirect("/profile");
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
 };
