@@ -191,3 +191,11 @@ exports.settings = async (req, res, next) => {
     console.log(error.message);
   }
 };
+
+exports.deleteProfile =  (req, res, next) => {
+  // res.send("deleteProfile Function");
+  const id = req.params.id;
+  pool.query("DELETE FROM Users WHERE UserID = ?",[id])
+  res.redirect("/")
+  // res.send("<h1> delete User successfully </h1>");
+};

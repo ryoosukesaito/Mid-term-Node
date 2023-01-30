@@ -9,5 +9,7 @@ router.post("/login", registerController.login);
 router.get("/logout", registerController.logout);
 
 router.post("/settings", registerController.settings);
+router.post("/profile/delete/:id", registerController.deleteProfile);
+//auth/profile/:id
 
 module.exports = router;
