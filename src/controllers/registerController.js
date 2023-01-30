@@ -29,6 +29,7 @@ exports.register = (req, res) => {
           Title: "Register Page",
           status: "error",
           msg: "Email is already registered",
+          user: undefined,
         });
       }
     }
@@ -49,6 +50,7 @@ exports.register = (req, res) => {
           Title: "Register Page",
           status: "error",
           msg: "username is already taken",
+          user: undefined,
         });
       }
       //insert account data
@@ -68,6 +70,7 @@ exports.register = (req, res) => {
               Title: "Register Page",
               status: "success",
               msg: "User has been registered successfully",
+              user: undefined,
             });
           }
         }
@@ -92,6 +95,7 @@ exports.login = async (req, res) => {
             Title: "Login Page",
             status: "error",
             msg: "Username or Password does not match",
+            user: undefined,
           });
         } else {
           // console.log("here is username check:  " + JSON.stringify(result[0].password));
@@ -100,6 +104,7 @@ exports.login = async (req, res) => {
               Title: "Login Page",
               status: "error",
               msg: "Password does not match",
+              user: undefined,
             });
           } else {
             const id = result[0].UserID;
@@ -134,13 +139,13 @@ exports.loggedIn = async (req, res, next) => {
         req.cookies.hoge,
         process.env.JWT_SECRET
       );
-      // console.log(decode);
+      console.log(decode);
       pool.query(
         "SELECT * FROM Users WHERE UserID = ?",
         [decode.UserID],
         (err, results) => {
           // console.log(results);
-          if(!results){
+          if (!results) {
             return next();
           }
           req.user = results[0];
@@ -157,9 +162,19 @@ exports.loggedIn = async (req, res, next) => {
 };
 
 exports.logout = async (req, res, next) => {
-  res.cookie("hoge","logout", {
-    expires: new Date(Date.now() + 2 *1000),
+  res.cookie("hoge", "logout", {
+    expires: new Date(Date.now() + 2 * 1000),
     httpOnly: true,
   });
-  res.redirect("/"); 
+  res.redirect("/");
+};
+
+exports.settings = (req, res, next) => {
+  console.log(req.body);
+  const { username, email, password, address, about } = req.body;
+
+  const upDateQuery = "UPDATE User SET username = ?, email = ?, password =?, address = ?, about = ? WHERE UserID =?";
+
+
+  res.redirect("/settings");
 };

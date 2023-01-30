@@ -10,6 +10,7 @@ const pool = mysql.createConnection({
 });
 
 
+
 const sql = `SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA= 'railway' AND TABLE_NAME='Users'`;
 
 pool.query(sql, (err, data) => {
@@ -26,6 +27,7 @@ pool.query(sql, (err, data) => {
 });
 
 const createDB = () => {
+  
   pool.query(`DROP TABLE IF EXISTS Users`);
 
   pool.query(
@@ -34,6 +36,8 @@ const createDB = () => {
       username VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL,
       password VARCHAR(255) NOT NULL,
+      address VARCHAR(255),
+      about TEXT,
       PRIMARY KEY (UserID)
     )`,
     (err) => {

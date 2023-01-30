@@ -8,6 +8,7 @@ router.get(["/", "/login"], (req, res) => {
     Title: "Login Page",
     status: "",
     msg: false,
+    user: undefined,
   });
 });
 router.get("/register", (req, res) => {
@@ -15,15 +16,8 @@ router.get("/register", (req, res) => {
     Title: "Register Page",
     status: "",
     msg: false,
+    user: undefined,
   });
-});
-
-router.get("/profile", registerController.loggedIn, (req, res) => {
-  if (req.user) {
-    res.render("profile", { user: req.user, Title: "Profile Page" });
-  } else {
-    res.redirect("/login");
-  }
 });
 
 router.get("/home", registerController.loggedIn, (req, res) => {
@@ -35,6 +29,7 @@ router.get("/home", registerController.loggedIn, (req, res) => {
 
     res.render("home", {
       Title: "Home Page",
+      user: req.user,
       username: req.user.username,
       msg: "You are logged in successfully",
     });
@@ -42,5 +37,23 @@ router.get("/home", registerController.loggedIn, (req, res) => {
     res.redirect("/login");
   }
 });
+
+router.get("/profile", registerController.loggedIn, (req, res) => {
+  if (req.user) {
+    res.render("profile", { user: req.user, Title: "Profile Page" });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.get("/settings",registerController.loggedIn, (req, res) => {
+  if (req.user) {
+    res.render("settings", { user: req.user, Title: "Settings Page" })
+  } else {
+    res.redirect("/login");
+  }
+});
+
+
 
 module.exports = router;
