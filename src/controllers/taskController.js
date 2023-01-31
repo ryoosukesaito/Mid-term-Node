@@ -22,30 +22,28 @@ const pool = require("../utils/mysql2");
 // };
 
 exports.postCreateTask = (req, res) => {
-  const { title, detail, username} = req.body;
+  const { title, detail, username } = req.body;
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth()+1;
-  const day = now.getDate()
-  const hours = now.getHours()
-  const minutes = now.getMinutes()
-  const seconds = now.getSeconds()
-  const date = year+"-"+month+"-"+day+" "+hours +":"+ minutes +":"+ seconds;
-  pool.query("INSERT INTO Tasks SET ?", {
-    title: title,
-    detail: detail,
-    username: username,
-    date: date
-  },
-  (err, results) => {
-    if (err) {
-      console.log(err);
-    }else{
-      return res.redirect("/tasks/all");
-    }
-  }
-  )
+  const date = now.toLocaleString();
 
+  console.log("username: " + username);
+
+  pool.query(
+    "INSERT INTO Tasks SET ?",
+    {
+      title: title,
+      detail: detail,
+      username: username,
+      date: date,
+    },
+    (err, results) => {
+      if (err) {
+        console.log(err);
+      } else {
+        return res.redirect("/tasks/all");
+      }
+    }
+  );
 };
 
 exports.getEditTask = (req, res) => {
@@ -53,6 +51,5 @@ exports.getEditTask = (req, res) => {
 };
 
 exports.deleteTask = (req, res) => {
-  console.log("pressed delete")
-}
-
+  console.log("pressed delete");
+};
