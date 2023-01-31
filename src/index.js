@@ -14,8 +14,8 @@ const apiRouter = require("./routes/auth");
 const tasksRouter = require("./routes/tasks.router");
 
 app.use("/js", express.static(path.join(__dirname, "/public/js")));
-app.set("view-engine", "ejs");
-app.set("views", "src/views");
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"))
 
 dbPool.connect((err) => {
   if (err) {
